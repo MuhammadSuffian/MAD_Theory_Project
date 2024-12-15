@@ -1,23 +1,19 @@
 package com.example.assignmenet_1_in_java;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.example.assignmenet_1_in_java.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -43,26 +39,26 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
         binding.btnLogin.setOnClickListener(v->{
-            if(binding.loginEmail.getText().toString().trim().isEmpty()){
+            if(binding.loginEmail.getText().toString().trim().isEmpty()){//Email field empty check
                 Toast.makeText(this,"Email Field Empty",Toast.LENGTH_SHORT).show();
             }
-            else if(binding.loginPassword.getText().toString().trim().isEmpty()){
+            else if(binding.loginPassword.getText().toString().trim().isEmpty()){//Password field empty check
                 Toast.makeText(this,"Password Field Empty",Toast.LENGTH_SHORT).show();
             }
-            else if(binding.loginPassword.getText().toString().length()<6){
+            else if(binding.loginPassword.getText().toString().length()<6){//Password must be minimum 6 characters check
                 Toast.makeText(this,"Minimum Length for password is 6",Toast.LENGTH_SHORT).show();
             }
             else{
-                onLoginPress();
-                auth.signInWithEmailAndPassword(binding.loginEmail.getText().toString(),binding.loginPassword.getText().toString())
+                onLoginPress();//to show a progress bar in a dialog box until user is logined
+                auth.signInWithEmailAndPassword(binding.loginEmail.getText().toString(),binding.loginPassword.getText().toString())//using Firebase auth for Account creation
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
-                                    String userId = task.getResult().getUser().getUid();
+                                    String userId = task.getResult().getUser().getUid();//unpon successfull it returns a userId
                                     FirebaseDatabase database=FirebaseDatabase.getInstance();
                                     DatabaseReference reference = database.getReference("users");
-                                    Query checkUserDb = reference.orderByChild("userId").equalTo(userId);
+                                    Query checkUserDb = reference.orderByChild("userId").equalTo(userId);// using userID fro,m Firebase Auth to get users data from Realtime Database
                                     checkUserDb.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -80,11 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                                                 intent.putExtra("age", ageFromDB);
                                                 intent.putExtra("gender", genderFromDB);
                                                 intent.putExtra("phone_number", phoneFromDB);
-                                                dialog.dismiss();
-                                                startActivity(intent);
+                                                dialog.dismiss();//Dismissing Dialog
+                                                startActivity(intent);// used intent to send data to Main Activity
                                             } else {
-                                                binding.loginEmail.setError("User does not exist");
-                                                binding.loginEmail.requestFocus();
+                                                binding.loginEmail.setError("User does not exist");// to display a error with caption
+                                                binding.loginEmail.requestFocus();// Sets focus to LoginEmail Field
                                                 dialog.dismiss();
                                             }
                                         }
@@ -109,12 +105,12 @@ public class LoginActivity extends AppCompatActivity {
         binding.signupRedirectText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);//Redirect to Signup Activity
                 startActivity(intent);
             }
         });
     }
-    void onLoginPress(){
+    void onLoginPress(){//Dialog box for Progress bar
         dialog=new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);

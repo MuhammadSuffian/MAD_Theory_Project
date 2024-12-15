@@ -40,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
     void initlizaion(){
         binding=ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        spinnersetup();
+        spinnersetup();// call function which steptups spinner by passing array of string
         auth= FirebaseAuth.getInstance();
 //        binding.signupButton.setOnClickListener(v->{
 //            if(binding.signupEmail.getText().toString().trim().isEmpty()){
@@ -95,24 +95,30 @@ public class SignUpActivity extends AppCompatActivity {
 //        });
 
         binding.signupButton.setOnClickListener(v->{
-            if(binding.signupEmail.getText().toString().trim().isEmpty()){
+            if(binding.signupEmail.getText().toString().trim().isEmpty()){//Email empty check
                 Snackbar.make(binding.getRoot(),"Please Enter Email",Snackbar.LENGTH_SHORT).show();
 
             }
-            else if(binding.signupPassword.getText().toString().trim().isEmpty()){
+            else if(binding.signupPassword.getText().toString().trim().isEmpty()){//check for password
                 Snackbar.make(binding.getRoot(),"Please Enter Password",Snackbar.LENGTH_SHORT).show();
             }
-            else if(binding.signupUsername.getText().toString().trim().isEmpty()){
+            else if(binding.signupUsername.getText().toString().trim().isEmpty()){//check for username
                 Snackbar.make(binding.getRoot(),"Please Enter Username",Snackbar.LENGTH_SHORT).show();
             }
-            else if(binding.signupPassword.getText().toString().length()<6){
+            else if(binding.signupPassword.getText().toString().length()<6){//check for minimum 6 length password
                 Toast.makeText(this,"Minimum Length for password is 6",Toast.LENGTH_SHORT).show();
             }
-            else if(binding.signupName.getText().toString().trim().isEmpty()){
+            else if(binding.signupName.getText().toString().trim().isEmpty()){//check for name
                 Snackbar.make(binding.getRoot(),"Please Enter Name",Snackbar.LENGTH_SHORT).show();
             }
+            else if(binding.signupPhoneNumber.getText().toString().trim().isEmpty()){//check for phone number
+                Snackbar.make(binding.getRoot(),"Please Phone Number ",Snackbar.LENGTH_SHORT).show();
+            }
+            else if(binding.signupAge.getText().toString().trim().isEmpty()){//check for age
+                Snackbar.make(binding.getRoot(),"Please AGE ",Snackbar.LENGTH_SHORT).show();
+            }
             else{
-                onSignupPress();
+                onSignupPress();//shows a dailog whihc progress bar
                 database=FirebaseDatabase.getInstance();
                 reference=database.getReference("users");
                 String name=binding.signupName.getText().toString();
@@ -122,26 +128,26 @@ public class SignUpActivity extends AppCompatActivity {
                 String age=binding.signupAge.getText().toString();
                 String phone=binding.signupPhoneNumber.getText().toString();
                 String gender=binding.signupGender.getSelectedItem().toString();
-                auth.createUserWithEmailAndPassword(email,password)
+                auth.createUserWithEmailAndPassword(email,password)//createsn users account using Firebase Auth
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
-                                    user = task.getResult().getUser();
+                                    user = task.getResult().getUser();//gets userID returned by Firebase auth upon acc creation
                                     Log.e("FIrebaseUser","user:"+user);
                                     Log.e("FIrebaseUser","user:"+user.getUid());
                                     Toast.makeText(SignUpActivity.this, "user:"+user, Toast.LENGTH_SHORT).show();
                                     Toast.makeText(SignUpActivity.this, "Confirmed Signup", Toast.LENGTH_SHORT).show();
                                     HelperClassv2 helperClass=new HelperClassv2(name,user.getUid(),username,age,phone,gender);
-                                    reference.child(user.getUid()).setValue(helperClass)
+                                    reference.child(user.getUid()).setValue(helperClass)//add data to Realtime Databse under UserID as key
                                             .addOnCompleteListener(saveTask -> {
                                                 if (saveTask.isSuccessful()) {
-                                                    dialog.dismiss();
+                                                    dialog.dismiss();//dismiss progress bar dialog
                                                     Toast.makeText(SignUpActivity.this,"You have signup successfully!",Toast.LENGTH_SHORT).show();
                                                     Intent intent=new Intent(SignUpActivity.this,LoginActivity.class);
-                                                    startActivity(intent);
+                                                    startActivity(intent);//redirects to Login activity
                                                 } else {
-                                                    dialog.dismiss();
+                                                    dialog.dismiss();//dismiss progress bar dialog
                                                     Toast.makeText(SignUpActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
                                                 }
                                             })
@@ -165,9 +171,8 @@ public class SignUpActivity extends AppCompatActivity {
                         });;
             }
         });
-
         binding.loginRedirectText.setOnClickListener(v->{
-            Intent intent=new Intent(this,LoginActivity.class);
+            Intent intent=new Intent(this,LoginActivity.class);//Open Login screen
             startActivity(intent);
         });
     }
@@ -191,17 +196,4 @@ public class SignUpActivity extends AppCompatActivity {
         dialog.show();
 
     }
-    void createUser(){
-        auth.createUserWithEmailAndPassword(binding.signupEmail.getText().toString().trim(),binding.signupPassword.getText().toString().trim())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            user = task.getResult().getUser();
-                            Toast.makeText(SignUpActivity.this, "Confirmed Signup", Toast.LENGTH_SHORT).show();
-                            //store to db
-                        }
-                    }
-                });
-        }
     }
