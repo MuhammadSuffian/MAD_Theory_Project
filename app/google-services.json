@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "746187583918",
+    "firebase_url": "https://mad-theory-firebase-project-default-rtdb.firebaseio.com",
+    "project_id": "mad-theory-firebase-project",
+    "storage_bucket": "mad-theory-firebase-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746187583918:android:54723a33667895a977583f",
+        "android_client_info": {
+          "package_name": "com.example.assignmenet_1_in_java"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRfK9Q0YRZ9OIgw2UyUZL1M_UKxldsipg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746187583918:android:b69bc03313b4e52f77583f",
+        "android_client_info": {
+          "package_name": "com.example.assignment_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRfK9Q0YRZ9OIgw2UyUZL1M_UKxldsipg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746187583918:android:f8d3dff27abe906c77583f",
+        "android_client_info": {
+          "package_name": "com.example.theory_assignement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRfK9Q0YRZ9OIgw2UyUZL1M_UKxldsipg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
